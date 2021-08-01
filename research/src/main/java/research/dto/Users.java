@@ -1,16 +1,18 @@
 package research.dto;
 
-public class Alluser {
+public class Users {
+
 	private String userNo;
 	private String userName;
 	private String phoneNo;
 	private String email;
 	private String userId;
 	private String userPw;
+	private String userGrade;
 	@Override
 	public String toString() {
-		return "Alluser [userNo=" + userNo + ", userName=" + userName + ", phoneNo=" + phoneNo + ", email=" + email
-				+ ", userId=" + userId + ", userPw=" + userPw + "]";
+		return "Users [userNo=" + userNo + ", userName=" + userName + ", phoneNo=" + phoneNo + ", email=" + email
+				+ ", userId=" + userId + ", userPw=" + userPw + ", userGrade=" + userGrade + "]";
 	}
 	public String getUserNo() {
 		return userNo;
@@ -48,6 +50,13 @@ public class Alluser {
 	public void setUserPw(String userPw) {
 		this.userPw = userPw;
 	}
+	public String getUserGrade() {
+		return userGrade;
+	}
+	public void setUserGrade(String userGrade) {
+		this.userGrade = userGrade;
+	}
+	
 	
 	
 }

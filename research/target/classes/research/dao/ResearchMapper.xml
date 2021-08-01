@@ -5,5 +5,10 @@
   
 <mapper namespace="research.dao.ResearchDao">
 
+	<select id="selectAll" resultType="Survey">
+		SELECT * FROM survey
+		ORDER BY sur_seq DESC
+	</select>
+	
 
 </mapper>
