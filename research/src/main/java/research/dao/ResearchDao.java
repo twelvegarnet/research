@@ -31,5 +31,21 @@ public interface ResearchDao {
 	 */
 	void insertSurveyContent(SurveyContent surveyC);
 
+	/**
+	 * 설문조사 조회에서 보여줄 설문조사 정보를 얻어온다
+	 * 
+	 * @param survey - 설문조사 번호가 담겨있는 객체
+	 * @return 설문조사 번호에 해당하는 정보
+	 */
+	Survey selectSurvey(Survey survey);
+
+	/**
+	 * 설문조사 조회에서 보여줄 설문조사 문제 정보를 얻어온다
+	 * 
+	 * @param survey - 설문조사 번호가 담겨있는 객체
+	 * @return 설문조사 번호에 해당하는 모든 문제
+	 */
+	List<SurveyContent> selectSurveyContent(Survey survey);
+
 
 }

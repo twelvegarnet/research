@@ -49,8 +49,36 @@ public class ResearchController {
 	}
 	
 	@RequestMapping(value="/view")
-	public void ResearchView() {
-		logger.info("/research/view [GET] 요청 완료");
+	public void ResearchView(Survey survey, Model model) {
+//		logger.info("/research/view [GET] 요청 완료");
+		logger.info("얻어온 survey data 확인 : {}", survey);
+		
+		// 받아온 설문조사 번호에 해당하는 설문조사 전체정보 얻어오기
+		Survey s = researchService.getSurvey(survey);
+//		logger.info("얻어온 전체 survey data 확인 : {}", s);
+		
+		// 받아온 설문조사 번호에 해당하는 설문조사 전체 문제정보 얻어오기
+		List<SurveyContent> sc = researchService.getSurveyContent(survey);
+//		logger.info("얻어온 전체 survey question 확인 : {}", sc);
+		
+		// 얻어온 전체정보 model값 지정
+		model.addAttribute("survey", s);
+		model.addAttribute("surveyContent", sc);
+	}
+	
+	@RequestMapping(value="/submit", method=RequestMethod.POST)
+	public String submit(Survey survey, HttpServletRequest request) {
+		logger.info("/research/submit [POST] 요청 완료");
+		
+		int surCnt = survey.getSurCnt();
+		
+		logger.info("총 문제 수 : {}", surCnt);
+		
+		for(int i=1; i<=surCnt; i++) {
+			logger.info("선택 값 : {}", request.getParameterValues("chooseNum"+i));
+		}
+		
+		return "redirect:/research/list";
 	}
 	
 	

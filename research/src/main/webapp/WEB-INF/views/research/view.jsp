@@ -1,12 +1,120 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<%@page import="java.util.Date"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-</body>
-</html>
+<c:import url="/WEB-INF/views/layout/header.jsp" />
+
+
+
+<!-- css start -->
+<style type="text/css">
+.center {
+	text-align: center;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+.silver {
+	background-color: #f6f6f6;
+	color: #666;
+}
+
+tr {
+	border-bottom: 1px solid #ccc;
+	height: 40px;
+}
+
+.padding {
+	padding: 5px;
+}
+
+.inline-block {
+	display: inline-block;
+}
+</style>
+<!-- css end -->
+
+
+
+<!-- content start -->
+<div id="contnet" style="width: 1000px; margin: 0 auto; min-height: 663px;">
+
+	<div class="head" style="font-size: 20pt; font-weight: 500; margin-top: 20px;">설문조사</div>
+	
+	<table style="width: 100%; margin-top: 30px; table-layout: fixed; border-top: 2px solid blue;" >
+		
+		<tr>
+			<td class="center" colspan="1">제목</td>
+			<td colspan="5" style="padding: 8px;"><c:out value="${survey.surTitle }" escapeXml="true" /></td>
+		</tr>
+		<tr>
+			<td class="center" colspan="1">시작일</td>
+			<td colspan="1" style="padding: 8px;"><fmt:formatDate value="${survey.surStartDate }" pattern="yyyy-MM-dd" /></td>
+			<td class="center" colspan="1">종료일</td>
+			<td colspan="1" style="padding: 8px;"><fmt:formatDate value="${survey.surEndDate }" pattern="yyyy-MM-dd" /></td>
+			<td class="center" colspan="1">조회수</td>
+			<td colspan="1">${survey.hit }</td>
+		</tr>
+		<tr>
+			<td class="center" colspan="1">문항수</td>
+			<td colspan="5" style="padding: 8px;">${survey.surCnt }개</td>
+		</tr>
+		
+	</table>
+	
+	<form action="/research/submit" method="POST" name="surveyContent">
+	
+		<div id="surqList">
+			
+			<c:forEach var="sc" items="${surveyContent }" begin="0" end="${survey.surCnt }" varStatus="status">
+				<div class="padding">${status.count}.&nbsp;${sc.surqTitle }</div>
+				<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="1" />①&nbsp;${sc.surqTitle1 }</div>
+				<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="2" />②&nbsp;${sc.surqTitle2 }</div>
+				<c:if test="${not empty sc.surqTitle3 }">
+					<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="3" />③&nbsp;${sc.surqTitle3 }</div>
+				</c:if>
+				<c:if test="${not empty sc.surqTitle4 }">
+					<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="4" />④&nbsp;${sc.surqTitle4 }</div>
+				</c:if>
+				<c:if test="${not empty sc.surqTitle5 }">
+					<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="5" />⑤&nbsp;${sc.surqTitle5 }</div>
+				</c:if>
+				<div class="padding">선택사유&nbsp;<input type="text" style="width: 693px;" name="description" maxlength="50" /></div>
+				<hr>
+				<br>
+			</c:forEach>
+			
+		</div>
+	
+		<input type="hidden" name="surCnt" value="${survey.surCnt }" />
+
+	</form>
+	
+	<div id="btnBox" class="center" style="margin: 20px 0px;">
+		<input type="button" onclick="submitSur()" value="제출" />
+		<input type="button" onclick="javascript:history.go(-1)" value="목록" />
+	</div>
+	
+	
+</div> <!-- content end -->
+
+<script>
+function showResult(){
+	console.log("결과보기 버튼 작동")	
+}
+
+
+
+function submitSur(){
+	const f = document.surveyContent;
+	f.submit();
+}
+
+
+</script>
+
+<c:import url="/WEB-INF/views/layout/footer.jsp" />

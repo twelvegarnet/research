@@ -47,7 +47,7 @@ tr {
 			<fmt:formatDate value="${r.surEndDate }" pattern="yyMMdd" var="end" />
 			<tr style="border-bottom: 1px solid #ccc;">
 				<td style="text-align: center;">${r.surSeq }</td>
-				<td style="padding-left: 20px; overflow: hidden; text-overflow: ellipsis;"><a class="title" href="/research/view" style="white-space: pre;"><c:out value="${r.surTitle }" escapeXml="true" /></a></td>
+				<td style="padding-left: 20px; overflow: hidden; text-overflow: ellipsis;"><a class="title" href="/research/view?surSeq=${r.surSeq }" style="white-space: pre;"><c:out value="${r.surTitle }" escapeXml="true" /></a></td>
 				<td style="text-align: center;"><fmt:formatDate value="${r.surStartDate }" pattern="yyyy.MM.dd" /></td>
 				<td style="text-align: center;"><fmt:formatDate value="${r.surEndDate }" pattern="yyyy.MM.dd" /></td>
 				<td style="text-align: center;">

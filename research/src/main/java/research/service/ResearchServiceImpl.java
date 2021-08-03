@@ -64,6 +64,16 @@ public class ResearchServiceImpl implements ResearchService{
 		
 	}
 
+	@Override
+	public Survey getSurvey(Survey survey) {
+		return researchDao.selectSurvey(survey);
+	}
+
+	@Override
+	public List<SurveyContent> getSurveyContent(Survey survey) {
+		return researchDao.selectSurveyContent(survey);
+	}
+
 	
 	
 	
