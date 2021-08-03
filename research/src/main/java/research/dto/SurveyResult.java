@@ -3,43 +3,43 @@ package research.dto;
 import java.util.Date;
 
 public class SurveyResult {
-	private String surrSeq;
-	private String surSeq;
-	private String surqSeq;
-	private String surNum;
+	private int surrSeq;
+	private int surSeq;
+	private int surqSeq;
+	private String chooseTitle;
 	private String description;
 	private String writer;
 	private Date regDate;
 	private Date udtDate;
 	@Override
 	public String toString() {
-		return "SurveyResult [surrSeq=" + surrSeq + ", surSeq=" + surSeq + ", surqSeq=" + surqSeq + ", surNum=" + surNum
-				+ ", description=" + description + ", writer=" + writer + ", regDate=" + regDate + ", udtDate="
-				+ udtDate + "]";
+		return "SurveyResult [surrSeq=" + surrSeq + ", surSeq=" + surSeq + ", surqSeq=" + surqSeq + ", chooseTitle="
+				+ chooseTitle + ", description=" + description + ", writer=" + writer + ", regDate=" + regDate
+				+ ", udtDate=" + udtDate + "]";
 	}
-	public String getSurrSeq() {
+	public int getSurrSeq() {
 		return surrSeq;
 	}
-	public void setSurrSeq(String surrSeq) {
+	public void setSurrSeq(int surrSeq) {
 		this.surrSeq = surrSeq;
 	}
-	public String getSurSeq() {
+	public int getSurSeq() {
 		return surSeq;
 	}
-	public void setSurSeq(String surSeq) {
+	public void setSurSeq(int surSeq) {
 		this.surSeq = surSeq;
 	}
-	public String getSurqSeq() {
+	public int getSurqSeq() {
 		return surqSeq;
 	}
-	public void setSurqSeq(String surqSeq) {
+	public void setSurqSeq(int surqSeq) {
 		this.surqSeq = surqSeq;
 	}
-	public String getSurNum() {
-		return surNum;
+	public String getChooseTitle() {
+		return chooseTitle;
 	}
-	public void setSurNum(String surNum) {
-		this.surNum = surNum;
+	public void setChooseTitle(String chooseTitle) {
+		this.chooseTitle = chooseTitle;
 	}
 	public String getDescription() {
 		return description;
@@ -65,5 +65,7 @@ public class SurveyResult {
 	public void setUdtDate(Date udtDate) {
 		this.udtDate = udtDate;
 	}
+	
+	
 	
 }
