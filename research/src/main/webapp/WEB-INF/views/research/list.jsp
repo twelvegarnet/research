@@ -25,7 +25,7 @@ tr {
 }
 </style>
 
-<div id="content" style="width: 1000px; margin: 0 auto; min-height: 400px;">
+<div id="content" style="width: 1000px; margin: 0 auto; min-height: 663px;">
 
 	<div class="head" style="font-size: 20pt; font-weight: 700;">설문조사 목록</div>
 	
@@ -44,15 +44,15 @@ tr {
 		
 		<!-- List Body -->
 		<c:forEach var="r" items="${rlist }">
-			<fmt:formatDate value="${r.endDate }" pattern="yyMMdd" var="end" />
+			<fmt:formatDate value="${r.surEndDate }" pattern="yyMMdd" var="end" />
 			<tr style="border-bottom: 1px solid #ccc;">
-				<td style="text-align: center;">${r.seq }</td>
-				<td style="padding-left: 10px;"><a class="title" href="#">${r.surTitle }</a></td>
-				<td style="text-align: center;"><fmt:formatDate value="${r.startDate }" pattern="yyyy-MM-dd" /></td>
-				<td style="text-align: center;"><fmt:formatDate value="${r.endDate }" pattern="yyyy-MM-dd" /></td>
+				<td style="text-align: center;">${r.surSeq }</td>
+				<td style="padding-left: 20px; overflow: hidden; text-overflow: ellipsis;"><a class="title" href="/research/view" style="white-space: pre;"><c:out value="${r.surTitle }" escapeXml="true" /></a></td>
+				<td style="text-align: center;"><fmt:formatDate value="${r.surStartDate }" pattern="yyyy.MM.dd" /></td>
+				<td style="text-align: center;"><fmt:formatDate value="${r.surEndDate }" pattern="yyyy.MM.dd" /></td>
 				<td style="text-align: center;">
-					<c:if test="${end lt now }">진행중</c:if>
-					<c:if test="${end ge now }">완료</c:if>
+					<c:if test="${end lt now }">완료</c:if>
+					<c:if test="${end ge now }">진행중</c:if>
 				</td>
 				<td style="text-align: center;">${r.hit }</td>
 				<td style="text-align: center;"><input type="button" value="결과보기" /></td>

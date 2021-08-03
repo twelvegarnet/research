@@ -3,8 +3,8 @@ package research.dto;
 import java.util.Date;
 
 public class SurveyContent {
-	private String surqSeq;		// 문제번호
-	private String surSeq;		// 설문번호
+	private int surqSeq;		// 문제번호
+	private int surSeq;			// 설문번호
 	private String surqTitle;	// 문제
 	private String surqTitle1;	// 문항제목1
 	private String surqTitle2;	// 문항제목2
@@ -22,16 +22,16 @@ public class SurveyContent {
 				+ surqTitle4 + ", surqTitle5=" + surqTitle5 + ", regName=" + regName + ", regDate=" + regDate
 				+ ", udtName=" + udtName + ", udtDate=" + udtDate + "]";
 	}
-	public String getSurqSeq() {
+	public int getSurqSeq() {
 		return surqSeq;
 	}
-	public void setSurqSeq(String surqSeq) {
+	public void setSurqSeq(int surqSeq) {
 		this.surqSeq = surqSeq;
 	}
-	public String getSurSeq() {
+	public int getSurSeq() {
 		return surSeq;
 	}
-	public void setSurSeq(String surSeq) {
+	public void setSurSeq(int surSeq) {
 		this.surSeq = surSeq;
 	}
 	public String getSurqTitle() {
@@ -94,6 +94,7 @@ public class SurveyContent {
 	public void setUdtDate(Date udtDate) {
 		this.udtDate = udtDate;
 	}
+	
 	
 	
 }

@@ -10,5 +10,32 @@
 		ORDER BY sur_seq DESC
 	</select>
 	
+	<insert id="insertSurvey" parameterType="Survey">
+		
+		<selectKey order="BEFORE" resultType="int" keyProperty="surSeq">
+			SELECT survey_seq.nextval FROM dual
+		</selectKey>
+		
+		INSERT INTO survey (sur_seq, sur_title, sur_cnt, sur_start_date, sur_end_date, reg_name, udt_name)
+		VALUES (#{surSeq}, #{surTitle}, #{surCnt}, #{surStartDate}, #{surEndDate}, 'ehdcks112', 'ehdcks112')
+	</insert>
+	
+	<insert id="insertSurveyContent" parameterType="SurveyContent">
+		INSERT INTO survey_content (surq_seq, sur_seq, surq_title, surq_title1, surq_title2, surq_title3, surq_title4, surq_title5, reg_name)
+		VALUES (survey_content_seq.nextval, #{surSeq}, #{surqTitle}
+			, #{surqTitle1}
+			, #{surqTitle2}
+			<if test="!surqTitle3.equals('')">
+				, #{surqTitle3}
+			</if>
+			<if test="!surqTitle4.equals('')">
+				, #{surqTitle4}
+			</if>
+			<if test="!surqTitle5.equals('')">
+				, #{surqTitle5}
+			</if>
+			, '장동찬')
+	</insert>
+	
 
 </mapper>

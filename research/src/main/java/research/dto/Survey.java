@@ -3,26 +3,26 @@ package research.dto;
 import java.util.Date;
 
 public class Survey {
-	private String surSeq;
-	private String surTitle;
-	private String surCnt;
-	private Date surStartDate;
-	private Date surEndDate;
-	private String hit;
-	private String regName;
-	private Date regDate;
-	private String udtName;
-	private Date udtDate;
+	private int surSeq;				// 설문번호
+	private String surTitle;		// 제목
+	private int surCnt;				// 문제수
+	private Date surStartDate;		// 설문시작일자
+	private Date surEndDate;		// 설문종료일자
+	private int hit;				// 조회수
+	private String regName;			// 등록자
+	private Date regDate;			// 등록일
+	private String udtName;			// 수정자
+	private Date udtDate;			// 수정일
 	@Override
 	public String toString() {
 		return "Survey [surSeq=" + surSeq + ", surTitle=" + surTitle + ", surCnt=" + surCnt + ", surStartDate="
 				+ surStartDate + ", surEndDate=" + surEndDate + ", hit=" + hit + ", regName=" + regName + ", regDate="
 				+ regDate + ", udtName=" + udtName + ", udtDate=" + udtDate + "]";
 	}
-	public String getSurSeq() {
+	public int getSurSeq() {
 		return surSeq;
 	}
-	public void setSurSeq(String surSeq) {
+	public void setSurSeq(int surSeq) {
 		this.surSeq = surSeq;
 	}
 	public String getSurTitle() {
@@ -31,10 +31,10 @@ public class Survey {
 	public void setSurTitle(String surTitle) {
 		this.surTitle = surTitle;
 	}
-	public String getSurCnt() {
+	public int getSurCnt() {
 		return surCnt;
 	}
-	public void setSurCnt(String surCnt) {
+	public void setSurCnt(int surCnt) {
 		this.surCnt = surCnt;
 	}
 	public Date getSurStartDate() {
@@ -49,10 +49,10 @@ public class Survey {
 	public void setSurEndDate(Date surEndDate) {
 		this.surEndDate = surEndDate;
 	}
-	public String getHit() {
+	public int getHit() {
 		return hit;
 	}
-	public void setHit(String hit) {
+	public void setHit(int hit) {
 		this.hit = hit;
 	}
 	public String getRegName() {
@@ -79,5 +79,8 @@ public class Survey {
 	public void setUdtDate(Date udtDate) {
 		this.udtDate = udtDate;
 	}
+	
+	
+	
 	
 }
