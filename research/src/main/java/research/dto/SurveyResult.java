@@ -6,15 +6,15 @@ public class SurveyResult {
 	private int surrSeq;
 	private int surSeq;
 	private int surqSeq;
-	private String chooseTitle;
+	private int chooseNum;
 	private String description;
 	private String writer;
 	private Date regDate;
 	private Date udtDate;
 	@Override
 	public String toString() {
-		return "SurveyResult [surrSeq=" + surrSeq + ", surSeq=" + surSeq + ", surqSeq=" + surqSeq + ", chooseTitle="
-				+ chooseTitle + ", description=" + description + ", writer=" + writer + ", regDate=" + regDate
+		return "SurveyResult [surrSeq=" + surrSeq + ", surSeq=" + surSeq + ", surqSeq=" + surqSeq + ", chooseNum="
+				+ chooseNum + ", description=" + description + ", writer=" + writer + ", regDate=" + regDate
 				+ ", udtDate=" + udtDate + "]";
 	}
 	public int getSurrSeq() {
@@ -35,11 +35,11 @@ public class SurveyResult {
 	public void setSurqSeq(int surqSeq) {
 		this.surqSeq = surqSeq;
 	}
-	public String getChooseTitle() {
-		return chooseTitle;
+	public int getChooseNum() {
+		return chooseNum;
 	}
-	public void setChooseTitle(String chooseTitle) {
-		this.chooseTitle = chooseTitle;
+	public void setChooseNum(int chooseNum) {
+		this.chooseNum = chooseNum;
 	}
 	public String getDescription() {
 		return description;
@@ -65,6 +65,7 @@ public class SurveyResult {
 	public void setUdtDate(Date udtDate) {
 		this.udtDate = udtDate;
 	}
+	
 	
 	
 	

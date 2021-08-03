@@ -37,5 +37,16 @@
 			, '장동찬')
 	</insert>
 	
+	<select id="selectSurvey" parameterType="Survey" resultType="Survey">
+		SELECT * FROM survey
+		WHERE sur_seq = #{surSeq}
+	</select>
+	
+	<select id="selectSurveyContent" parameterType="Survey" resultType="SurveyContent">
+		SELECT * FROM survey_content
+		WHERE sur_seq = #{surSeq}
+		ORDER BY surq_seq ASC
+	</select>
+	
 
 </mapper>
