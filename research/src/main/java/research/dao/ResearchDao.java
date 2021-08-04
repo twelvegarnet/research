@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import research.dto.Survey;
 import research.dto.SurveyContent;
+import research.dto.SurveyResult;
 
 @Repository
 public interface ResearchDao {
@@ -46,6 +47,13 @@ public interface ResearchDao {
 	 * @return 설문조사 번호에 해당하는 모든 문제
 	 */
 	List<SurveyContent> selectSurveyContent(Survey survey);
+
+	/**
+	 * 회원이 실행한 설문조사 결과를 DB에 삽입한다
+	 * 
+	 * @param request - 회원의 설문조사 결과를 담고있는 객체
+	 */
+	void insertSurveyResult(SurveyResult sr);
 
 
 }

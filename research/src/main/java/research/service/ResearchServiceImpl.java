@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import research.dao.ResearchDao;
 import research.dto.Survey;
 import research.dto.SurveyContent;
+import research.dto.SurveyResult;
 
 @Service
 public class ResearchServiceImpl implements ResearchService{
@@ -72,6 +73,33 @@ public class ResearchServiceImpl implements ResearchService{
 	@Override
 	public List<SurveyContent> getSurveyContent(Survey survey) {
 		return researchDao.selectSurveyContent(survey);
+	}
+
+	@Override
+	@Transactional
+	public void insertResult(HttpServletRequest request) {
+		
+		// 회원이 참여한 설문조사 결과를 DB에 삽입한다
+		int surCnt = Integer.parseInt(request.getParameter("surCnt"));
+		for(int i=1; i<=surCnt; i++) {
+			SurveyResult sr = new SurveyResult();
+			
+			sr.setSurSeq(Integer.parseInt(request.getParameter("surSeq")));
+			sr.setSurqSeq(Integer.parseInt(request.getParameter("surqSeq"+i)));
+			sr.setChooseNum(Integer.parseInt(request.getParameter("chooseNum"+i)));
+			if(!"".equals(request.getParameter("descriptipn"+i)) || request.getParameter("descriptipn"+i) != null) {
+				sr.setDescription(request.getParameter("description"+i));
+			}
+			
+//			logger.info("얻어온 각 결과값 확인 : {}", sr);
+			
+			//결과값 DB 삽입
+			researchDao.insertSurveyResult(sr);
+			
+		}
+		
+		// 삽입했다면 조회수를 1 올린다
+		
 	}
 
 	

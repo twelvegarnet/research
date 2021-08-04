@@ -27,7 +27,7 @@ tr {
 
 <div id="content" style="width: 1000px; margin: 0 auto; min-height: 663px;">
 
-	<div class="head" style="font-size: 20pt; font-weight: 700;">설문조사 목록</div>
+	<div class="head" style="font-size: 20pt; font-weight: 500;">설문조사 목록</div>
 	
 	<table style="width: 100%; margin-top: 30px; table-layout: fixed; border-top: 2px solid blue;">
 	

@@ -48,5 +48,18 @@
 		ORDER BY surq_seq ASC
 	</select>
 	
+	<insert id="insertSurveyResult" parameterType="SurveyResult">
+		INSERT INTO sur_result (surr_seq, sur_seq, surq_seq, choose_num, 
+		<if test="!description.equals('')">
+		 	description,
+		</if>
+			 writer )
+		VALUES (sur_result_seq.nextval, #{surSeq}, #{surqSeq}, #{chooseNum},
+		<if test="!description.equals('')">
+			#{description},
+		</if> 
+			'장동찬')
+	</insert>
+	
 
 </mapper>
