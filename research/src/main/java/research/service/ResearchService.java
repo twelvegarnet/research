@@ -40,5 +40,12 @@ public interface ResearchService {
 	 */
 	List<SurveyContent> getSurveyContent(Survey survey);
 
+	/**
+	 * 회원이 실행한 설문조사 결과를 DB에 삽입한다
+	 * 
+	 * @param request - 회원의 설문조사 결과를 담고있는 객체
+	 */
+	void insertResult(HttpServletRequest request);
+
 
 }

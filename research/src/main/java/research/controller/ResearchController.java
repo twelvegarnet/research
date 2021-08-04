@@ -67,16 +67,20 @@ public class ResearchController {
 	}
 	
 	@RequestMapping(value="/submit", method=RequestMethod.POST)
-	public String submit(Survey survey, HttpServletRequest request) {
+	public String submit(HttpServletRequest request) {
 		logger.info("/research/submit [POST] 요청 완료");
 		
-		int surCnt = survey.getSurCnt();
+		// 총 문제수 얻어오기
+//		int surCnt = Integer.parseInt(request.getParameter("surCnt"));
+
+		// 모든 문제 확인
+//		for(int i=1; i<=surCnt; i++) {
+//			logger.info("선택 번호 : {}", request.getParameterValues("chooseNum"+i));
+//			logger.info("선택 사유 : {}", request.getParameterValues("description"+i));
+//		}
 		
-		logger.info("총 문제 수 : {}", surCnt);
-		
-		for(int i=1; i<=surCnt; i++) {
-			logger.info("선택 값 : {}", request.getParameterValues("chooseNum"+i));
-		}
+		// 얻어온 값 결과 테이블에 삽입
+		researchService.insertResult(request);
 		
 		return "redirect:/research/list";
 	}

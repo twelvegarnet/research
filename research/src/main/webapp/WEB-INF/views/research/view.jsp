@@ -71,25 +71,27 @@ tr {
 		<div id="surqList">
 			
 			<c:forEach var="sc" items="${surveyContent }" begin="0" end="${survey.surCnt }" varStatus="status">
-				<div class="padding">${status.count}.&nbsp;${sc.surqTitle }</div>
-				<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="1" />①&nbsp;${sc.surqTitle1 }</div>
-				<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="2" />②&nbsp;${sc.surqTitle2 }</div>
+				<input type="hidden" name="surqSeq${status.count }" value="${sc.surqSeq }" />
+				<div class="padding">${status.count}.&nbsp;<c:out value="${sc.surqTitle }" escapeXml="true" /></div>
+				<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="1" />①&nbsp;<c:out value="${sc.surqTitle1 }" escapeXml="true" /></div>
+				<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="2" />②&nbsp;<c:out value="${sc.surqTitle2 }" escapeXml="true" /></div>
 				<c:if test="${not empty sc.surqTitle3 }">
-					<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="3" />③&nbsp;${sc.surqTitle3 }</div>
+					<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="3" />③&nbsp;<c:out value="${sc.surqTitle3 }" escapeXml="true" /></div>
 				</c:if>
 				<c:if test="${not empty sc.surqTitle4 }">
-					<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="4" />④&nbsp;${sc.surqTitle4 }</div>
+					<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="4" />④&nbsp;<c:out value="${sc.surqTitle4 }" escapeXml="true" /></div>
 				</c:if>
 				<c:if test="${not empty sc.surqTitle5 }">
-					<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="5" />⑤&nbsp;${sc.surqTitle5 }</div>
+					<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="5" />⑤&nbsp;<c:out value="${sc.surqTitle5 }" escapeXml="true" /></div>
 				</c:if>
-				<div class="padding">선택사유&nbsp;<input type="text" style="width: 693px;" name="description" maxlength="50" /></div>
+				<div class="padding">선택사유&nbsp;<input type="text" style="width: 693px;" name="description${status.count }" maxlength="50" /></div>
 				<hr>
 				<br>
 			</c:forEach>
 			
 		</div>
 	
+		<input type="hidden" name="surSeq" value="${survey.surSeq }" />
 		<input type="hidden" name="surCnt" value="${survey.surCnt }" />
 
 	</form>
