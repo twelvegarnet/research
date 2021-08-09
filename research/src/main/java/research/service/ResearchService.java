@@ -9,15 +9,17 @@ import research.dto.Survey;
 import research.dto.SurveyContent;
 import research.dto.SurveyResult;
 import research.dto.Users;
+import research.util.Paging;
 
 public interface ResearchService {
 
 	/**
 	 * 전체 설문조사 리스트를 얻어온다
 	 * 
+	 * @param paging 페이징 적용할 객체
 	 * @return 작성된 전체 설문조사 리스트
 	 */
-	List<Survey> getList();
+	List<Survey> getList(Paging paging);
 
 	/**
 	 * 설문조사 작성 폼에서 작성된 내용을 DB에 삽입한다
@@ -93,6 +95,30 @@ public interface ResearchService {
 	 * @return - 내가 수행한 설문조사 정보
 	 */
 	List<HashMap<String, Object>> getMyResult(Survey survey);
+
+	/**
+	 * 회원이 수정한 설문조사 결과를 기존 DB에 덮어씌운다
+	 * 
+	 * @param request - 수정된 설문조사 결과를 가지고있는 객체
+	 */
+	void updateSurveyResult(HttpServletRequest request);
+
+	/**
+	 * 접속한 회원이 작성한 설문조사 결과를 삭제한다
+	 * 
+	 * @param surveyResult - 설문조사 번호와 아이디가 담겨있는 객체
+	 */
+	void deleteSurveyResult(SurveyResult surveyResult);
+
+	/**
+	 * 페이지네이션 기능을 추가한다
+	 * 
+	 * @param p - 현재페이지, 검색기준, 검색목록을 가지고있는 객체
+	 * @return - 페이징 처리에 사용할 기준 값
+	 */
+	Paging getPaging(Paging p);
+
+	int userChk(SurveyResult sr);
 
 
 }

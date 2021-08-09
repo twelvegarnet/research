@@ -5,9 +5,36 @@
   
 <mapper namespace="research.dao.ResearchDao">
 
-	<select id="selectAll" resultType="Survey">
-		SELECT * FROM survey
-		ORDER BY sur_seq DESC
+	<select id="selectCntAll" parameterType="research.util.Paging" resultType="int">
+		SELECT count(*) FROM survey
+		WHERE 1=1
+		<if test="!search.equals('')">
+			<if test="category.equals('title')">
+				AND REGEXP_LIKE ( sur_title, #{search} )
+			</if>
+			<if test="category.equals('writer')">
+				AND REGEXP_LIKE ( reg_name, #{search} )
+			</if>
+		</if>
+	</select>
+	
+	<select id="selectAll" parameterType="research.util.Paging" resultType="Survey">
+		SELECT * FROM (
+			SELECT SSS.* FROM (
+				SELECT rownum, SS.* FROM (
+					SELECT rownum rnum, S.* FROM (
+						SELECT 
+							survey.*
+							, (SELECT count(*) FROM sur_result WHERE sur_result.sur_seq = survey.sur_seq AND writer = #{writer})AS did_sur
+						FROM survey
+						ORDER BY survey.sur_seq DESC
+					)S
+					ORDER BY rnum DESC
+				)SS
+			)SSS
+			ORDER BY rnum ASC
+		)
+		WHERE rnum BETWEEN #{startNo} AND #{endNo}
 	</select>
 	
 	<insert id="insertSurvey" parameterType="Survey">
@@ -16,8 +43,8 @@
 			SELECT survey_seq.nextval FROM dual
 		</selectKey>
 		
-		INSERT INTO survey (sur_seq, sur_title, sur_cnt, sur_start_date, sur_end_date, reg_name)
-		VALUES (#{surSeq}, #{surTitle}, #{surCnt}, #{surStartDate}, #{surEndDate}, #{regName})
+		INSERT INTO survey (sur_seq, sur_title, sur_cnt, sur_start_date, sur_end_date, writer, reg_name)
+		VALUES (#{surSeq}, #{surTitle}, #{surCnt}, #{surStartDate}, #{surEndDate}, #{writer}, #{regName})
 	</insert>
 	
 	<insert id="insertSurveyContent" parameterType="SurveyContent">
@@ -138,6 +165,28 @@
 	<select id="selectSurveyResultDescription" parameterType="SurveyResult" resultType="SurveyResult">
 		SELECT * FROM sur_result
 		WHERE sur_seq = #{surSeq} AND surq_seq = #{surqSeq} AND choose_num = #{chooseNum}
+	</select>
+	
+	<update id="updateSurveyResult" parameterType="SurveyResult">
+		UPDATE sur_result
+		SET choose_num = #{chooseNum}, description = #{description}
+		WHERE sur_seq = #{surSeq} AND surq_seq = #{surqSeq} AND writer = #{writer}
+	</update>
+	
+	<delete id="deleteSurveyResult" parameterType="SurveyResult">
+		DELETE FROM sur_result
+		WHERE sur_seq = #{surSeq} AND writer = #{writer}
+	</delete>
+	
+	<update id="decreaseHit" parameterType="SurveyResult">
+		UPDATE survey
+		SET hit = hit - 1
+		WHERE sur_seq = #{surSeq}
+	</update>
+	
+	<select id="userChk" parameterType="SurveyResult" resultType="int">
+		SELECT count(*) FROM sur_result
+		WHERE sur_seq = #{surSeq} AND writer = #{writer}
 	</select>
 	
 	

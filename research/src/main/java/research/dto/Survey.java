@@ -13,11 +13,17 @@ public class Survey {
 	private Date regDate;			// 등록일
 	private String udtName;			// 수정자
 	private Date udtDate;			// 수정일
+	private int rnum;
+	private int rownum;
+	private String writer;
+	private int didSur;
+	
 	@Override
 	public String toString() {
 		return "Survey [surSeq=" + surSeq + ", surTitle=" + surTitle + ", surCnt=" + surCnt + ", surStartDate="
 				+ surStartDate + ", surEndDate=" + surEndDate + ", hit=" + hit + ", regName=" + regName + ", regDate="
-				+ regDate + ", udtName=" + udtName + ", udtDate=" + udtDate + "]";
+				+ regDate + ", udtName=" + udtName + ", udtDate=" + udtDate + ", rnum=" + rnum + ", rownum=" + rownum
+				+ ", writer=" + writer + ", didSur=" + didSur + "]";
 	}
 	public int getSurSeq() {
 		return surSeq;
@@ -79,6 +85,32 @@ public class Survey {
 	public void setUdtDate(Date udtDate) {
 		this.udtDate = udtDate;
 	}
+	public int getRnum() {
+		return rnum;
+	}
+	public void setRnum(int rnum) {
+		this.rnum = rnum;
+	}
+	public int getRownum() {
+		return rownum;
+	}
+	public void setRownum(int rownum) {
+		this.rownum = rownum;
+	}
+	public String getWriter() {
+		return writer;
+	}
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
+	public int getDidSur() {
+		return didSur;
+	}
+	public void setDidSur(int didSur) {
+		this.didSur = didSur;
+	}
+	
+	
 	
 	
 	

@@ -1,11 +1,7 @@
 package research.controller;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,12 +13,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import research.dto.Survey;
 import research.dto.SurveyContent;
 import research.dto.SurveyResult;
 import research.dto.Users;
 import research.service.ResearchService;
+import research.util.Paging;
 
 @Controller
 @RequestMapping(value="/research")
@@ -76,11 +74,32 @@ public class ResearchController {
 	}
 	
 	@RequestMapping(value="/list", method=RequestMethod.GET)
-	public void list(Model model) {
-		List<Survey> rlist = researchService.getList();
-		logger.info("얻어온 전체 설문조사 리스트 : {}", rlist);
+	public void list(
+			@RequestParam(defaultValue="0") int curPage
+			, @RequestParam(defaultValue="") String category
+			, @RequestParam(defaultValue="") String search
+			, HttpServletRequest request
+			,Model model) {
 		
-		model.addAttribute("rlist", rlist);
+		HttpSession session = request.getSession();
+		String writer = (String)session.getAttribute("userId");
+		
+		Paging p = new Paging();
+		p.setCurPage(curPage);
+		p.setCategory(category);
+		p.setSearch(search);
+		
+		Paging paging = researchService.getPaging(p);
+		paging.setCategory(category);
+		paging.setSearch(search);
+		paging.setWriter(writer);
+
+		model.addAttribute("paging", paging);
+		
+		List<Survey> slist = researchService.getList(paging);
+		logger.info("얻어온 전체 설문조사 리스트 : {}", slist);
+		
+		model.addAttribute("slist", slist);
 	}
 	
 	@RequestMapping(value="/create", method=RequestMethod.GET)
@@ -220,6 +239,34 @@ public class ResearchController {
 		model.addAttribute("survey", s);
 		model.addAttribute("surveyContent", surveyContent);
 	}
+	
+	@RequestMapping(value="/updateSurveyResult", method=RequestMethod.POST)
+	public String updateSurveyResult(HttpServletRequest request) {
+		
+		researchService.updateSurveyResult(request);
+		
+		int surSeq = Integer.parseInt(request.getParameter("surSeq"));
+		
+		return "redirect:/research/view?surSeq="+surSeq;
+	}
+	
+	@RequestMapping(value="/deleteSurveyResult")
+	public String deleteSurveyResult(SurveyResult surveyResult, HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		String userId = (String) session.getAttribute("userId");
+		surveyResult.setWriter(userId);
+//		logger.info("얻어온 SurveyResult의 값 : {}", surveyResult);
+//		logger.info("접속되어있는 아이디 : {}", userId);
+		
+		// 해당 회원의 설문조사 결과 삭제
+		researchService.deleteSurveyResult(surveyResult);
+		
+		// 설문조사 리스트로 이동
+		return "redirect:/research/list";
+	}
+	
+
 	
 	
 	

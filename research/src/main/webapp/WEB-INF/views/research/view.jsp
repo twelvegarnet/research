@@ -3,6 +3,7 @@
 <%@page import="java.util.Date"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:formatDate value="<%=new Date() %>" pattern="yyMMdd" var="now" />
 
 <c:import url="/WEB-INF/views/layout/header.jsp" />
 
@@ -69,6 +70,8 @@ tr {
 	<form action="/research/submit" method="POST" name="surveyContent">
 	
 		<div id="surqList" style="margin-top: 10px;">
+			<fmt:formatDate value="${survey.surStartDate }" pattern="yyMMdd" var="start" />
+			<fmt:formatDate value="${survey.surEndDate }" pattern="yyMMdd" var="end" />
 			
 			<c:forEach var="sc" items="${surveyContent }" begin="0" end="${survey.surCnt }" varStatus="status">
 				<input type="hidden" name="surqSeq${status.count }" value="${sc.SURQ_SEQ }" />
@@ -77,6 +80,7 @@ tr {
 				<c:choose>
 					<c:when test="${sc.CHOOSENUM eq 1 }">
 						<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="1" checked="checked" disabled="disabled" />①&nbsp;<c:out value="${sc.SURQ_TITLE1 }" escapeXml="true" /></div>
+						<c:set value="${sc.CHOOSENUM }" var="doSurveyChk" />
 					</c:when>
 					<c:otherwise>
 						<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="1" disabled="disabled" />①&nbsp;<c:out value="${sc.SURQ_TITLE1 }" escapeXml="true" /></div>
@@ -141,8 +145,14 @@ tr {
 			<input type="button" onclick="updateSur()" value="설문조사 수정" />
 			<input type="button" onclick="deleteSur()" value="설문조사 삭제" />
 		</c:if>
-		<input type="button" onclick="updateResult()" value="수정" />
-		<input type="button" onclick="deleteResult()" value="삭제" />
+		
+		<c:if test="${empty doSurveyChk }">
+			<input type="button" onclick="goSurvey(${survey.surSeq }, ${now }, ${start }, ${end } )" value="설문조사 참여" />
+		</c:if>
+		<c:if test="${not empty doSurveyChk }">
+			<input type="button" onclick="updateResult()" value="설문조사 결과 수정" />
+			<input type="button" onclick="deleteResult()" value="설문조사 결과 삭제" />
+		</c:if>
 		<input type="button" onclick="location.href='/research/list'" value="목록" />
 	</div>
 	
@@ -166,6 +176,32 @@ if(day < 10){
 }
 
 const getToday = (year + "" + month + "" + day)*1; // 오늘 날짜
+
+
+function goSurvey(seq_no, today, start, end ){
+	
+	if( '' === '${sessionScope.userGrade}'){
+		
+		alert("로그인 후 이용가능합니다.");
+		return false
+	}
+	
+	
+	if( today < start ){
+		
+		alert("설문조사 시작일 전입니다.");
+		return false
+		
+	} else if ( today > end ) {
+		
+		alert("해당 설문조사는 종료되었습니다.");
+		return false
+		
+	} else {
+		
+		location.href = "/research/doSurvey?surSeq="+seq_no;
+	}
+}
 
 
 
@@ -232,7 +268,7 @@ function deleteResult(){
 		return false
 	}
 	
-	const finalChk = confirm("수정하시겠습니까?")
+	const finalChk = confirm("삭제하시겠습니까?")
 	
 	if(finalChk == true){
 		location.href = "/research/deleteSurveyResult?surSeq="+${survey.surSeq};

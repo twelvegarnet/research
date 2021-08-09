@@ -17,6 +17,7 @@ import research.dto.Survey;
 import research.dto.SurveyContent;
 import research.dto.SurveyResult;
 import research.dto.Users;
+import research.util.Paging;
 
 @Service
 public class ResearchServiceImpl implements ResearchService{
@@ -24,10 +25,23 @@ public class ResearchServiceImpl implements ResearchService{
 	
 	@Autowired
 	ResearchDao researchDao;
+	
+	@Override
+	public Paging getPaging(Paging p) {
+		
+		int curPage = p.getCurPage();
+		int totalCount = researchDao.selectCntAll(p);
+		
+		Paging paging = new Paging(totalCount, curPage);
+		
+		return paging;
+	}
+
+
 
 	@Override
-	public List<Survey> getList() {
-		return researchDao.selectAll();
+	public List<Survey> getList(Paging paging) {
+		return researchDao.selectAll(paging);
 	}
 
 	@Override
@@ -36,7 +50,9 @@ public class ResearchServiceImpl implements ResearchService{
 		// 설문조사 정보 삽입
 		HttpSession session = request.getSession();
 		String userId = (String)session.getAttribute("userId");
+		String userName = (String)session.getAttribute("userName");
 		survey.setRegName(userId);
+		survey.setWriter(userName);
 		researchDao.insertSurvey(survey);
 		
 		// 반복해서 삽입해야하는 List의 길이(문제 수) 얻어오기
@@ -213,6 +229,53 @@ public class ResearchServiceImpl implements ResearchService{
 	@Override
 	public List<HashMap<String, Object>> getMyResult(Survey survey) {
 		return researchDao.selectMyResult(survey);
+	}
+
+	@Override
+	public void updateSurveyResult(HttpServletRequest request) {
+		
+		// 회원이 수정한 설문조사 결과를 DB에 반영한다
+		int surCnt = Integer.parseInt(request.getParameter("surCnt"));
+		int surSeq = Integer.parseInt(request.getParameter("surSeq"));
+		HttpSession session = request.getSession();
+		String userId = (String) session.getAttribute("userId");
+		for(int i=1; i<=surCnt; i++) {
+
+			SurveyResult sr = new SurveyResult();
+			
+			sr.setSurSeq(surSeq);
+			sr.setSurqSeq(Integer.parseInt(request.getParameter("surqSeq"+i)));
+			sr.setChooseNum(Integer.parseInt(request.getParameter("chooseNum"+i)));
+			if(!"".equals(request.getParameter("descriptipn"+i)) || request.getParameter("descriptipn"+i) != null) {
+				sr.setDescription(request.getParameter("description"+i));
+			}
+			sr.setWriter(userId);
+			
+			logger.info("얻어온 각 결과값 확인 : {}", sr);
+			
+			//수정값 DB 반영
+			researchDao.updateSurveyResult(sr);
+			
+		}
+				
+	}
+
+	@Override
+	@Transactional
+	public void deleteSurveyResult(SurveyResult surveyResult) {
+		
+		// 해당 설문조사 결과 삭제
+		researchDao.deleteSurveyResult(surveyResult);
+		
+		// 참여수 1 감소
+		researchDao.decreaseHit(surveyResult);
+	}
+
+
+
+	@Override
+	public int userChk(SurveyResult sr) {
+		return researchDao.userChk(sr);
 	}
 
 	

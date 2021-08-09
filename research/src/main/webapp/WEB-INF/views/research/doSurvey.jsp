@@ -106,12 +106,6 @@ tr {
 </div> <!-- content end -->
 
 <script>
-function showResult(){
-	console.log("결과보기 버튼 작동")	
-}
-
-
-
 function submitSur(){
 	const f = document.surveyContent;
 	f.submit();
