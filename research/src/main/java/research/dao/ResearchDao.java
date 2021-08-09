@@ -9,6 +9,7 @@ import research.dto.Survey;
 import research.dto.SurveyContent;
 import research.dto.SurveyResult;
 import research.dto.Users;
+import research.util.Paging;
 
 @Repository
 public interface ResearchDao {
@@ -18,7 +19,7 @@ public interface ResearchDao {
 	 * 
 	 * @return 작성된 전체 설문조사 리스트
 	 */
-	List<Survey> selectAll();
+	List<Survey> selectAll(Paging paging);
 
 	/**
 	 * 작성된 설문조사 정보를 DB에 삽입한다
@@ -109,6 +110,37 @@ public interface ResearchDao {
 	 * @return - 내가 수행한 설문조사 정보
 	 */
 	List<HashMap<String, Object>> selectMyResult(Survey survey);
+
+	/**
+	 * 회원이 수정한 설문조사 결과를 기존 DB에 덮어씌운다
+	 * 
+	 * @param request - 수정된 설문조사 결과를 가지고있는 객체
+	 */
+	void updateSurveyResult(SurveyResult sr);
+
+	/**
+	 * 접속한 회원이 작성한 설문조사 결과를 삭제한다
+	 * 
+	 * @param surveyResult - 설문조사 번호와 아이디가 담겨있는 객체
+	 */
+	void deleteSurveyResult(SurveyResult surveyResult);
+
+	/**
+	 * 설문조사 결과 삭제시 참여수를 1 감소시킨다
+	 * 
+	 * @param surveyResult - 설문조사 번호가 담겨있는 객체
+	 */
+	void decreaseHit(SurveyResult surveyResult);
+
+	/**
+	 * 검색된 전체 설문조사 리스트 조회
+	 * 
+	 * @param p - 페이징을 적용할 기준값을 가진 객체
+	 * @return 기준값에 해당하는 설문조사 리스트
+	 */
+	int selectCntAll(Paging p);
+
+	int userChk(SurveyResult sr);
 
 
 }

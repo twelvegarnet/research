@@ -5,6 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:import url="/WEB-INF/views/layout/header.jsp" />
+<link rel="stylesheet" href="/resources/css/pagination.css">
 
 <fmt:formatDate value="<%=new Date() %>" pattern="yyMMdd" var="now" />
 
@@ -37,7 +38,7 @@ tr {
 			<label>${sessionScope.userName } 회원님 안녕하세요</label>
 		</c:if>
 		<c:if test="${sessionScope.userGrade eq null }">
-			<label>비회원님 안녕하세요</label>
+			<label>로그인을 하셔야 이용가능합니다.</label>
 		</c:if>
 		<c:if test="${sessionScope.userGrade eq null }">
 			<input type="button" value="로그인" style="margin: 5px;" onclick="login()" />
@@ -52,7 +53,8 @@ tr {
 		<!-- List Header -->
 		<tr>
 			<th style="width: 5%;">NO</th>
-			<th style="width: 48%;">제목</th>
+			<th style="width: 38%;">제목</th>
+			<th style="width: 10%;">작성자</th>
 			<th style="width: 10%;">시작일</th>
 			<th style="width: 10%;">마감일</th>
 			<th style="width: 10%;">완료여부</th>
@@ -62,38 +64,52 @@ tr {
 		</tr>
 		
 		<!-- List Body -->
-		<c:forEach var="r" items="${rlist }">
-			<fmt:formatDate value="${r.surStartDate }" pattern="yyMMdd" var="start" />
-			<fmt:formatDate value="${r.surEndDate }" pattern="yyMMdd" var="end" />
+		<c:forEach var="s" items="${slist }">
+			<fmt:formatDate value="${s.surStartDate }" pattern="yyMMdd" var="start" />
+			<fmt:formatDate value="${s.surEndDate }" pattern="yyMMdd" var="end" />
 			<tr style="border-bottom: 1px solid #ccc;">
-				<td style="text-align: center;">${r.surSeq }</td>
-				
-					<td style="padding-left: 20px; overflow: hidden; text-overflow: ellipsis;"><a class="title" href="/research/view?surSeq=${r.surSeq }" style="white-space: pre;"><c:out value="${r.surTitle }" escapeXml="true" /></a></td>
-				
-				
-				<td style="text-align: center;"><fmt:formatDate value="${r.surStartDate }" pattern="yyyy.MM.dd" /></td>
-				<td style="text-align: center;"><fmt:formatDate value="${r.surEndDate }" pattern="yyyy.MM.dd" /></td>
+				<td style="text-align: center;">${s.rownum }</td>
+				<td style="padding-left: 20px; overflow: hidden; text-overflow: ellipsis;"><a class="title" href="/research/view?surSeq=${s.surSeq }" style="white-space: pre;"><c:out value="${s.surTitle }" escapeXml="true" /></a></td>
+				<td style="text-align: center;">${s.writer }</td>
+				<td style="text-align: center;"><fmt:formatDate value="${s.surStartDate }" pattern="yyyy.MM.dd" /></td>
+				<td style="text-align: center;"><fmt:formatDate value="${s.surEndDate }" pattern="yyyy.MM.dd" /></td>
 				<td style="text-align: center;">
 					<c:if test="${now lt start }">설문예정</c:if>
 					<c:if test="${now ge start && now le end }">진행중</c:if>
 					<c:if test="${now gt end }">완료</c:if>
 				</td>
-				<td style="text-align: center;">${r.hit }</td>
-				<td style="text-align: center;"><input type="button" value="참여" onclick="goSurvey(${r.surSeq}, ${now }, ${start }, ${end })" /></td>
-				<td style="text-align: center;"><input type="button" value="결과" onclick="viewResult(${r.surSeq}, ${now }, ${start }, ${end })" /></td>
+				<td style="text-align: center;">${s.hit }</td>
+				<c:if test="${s.didSur eq 0}">
+					<td style="text-align: center;"><input type="button" value="참여" onclick="goSurvey(${s.surSeq}, ${now }, ${start }, ${end })" /></td>
+				</c:if>
+				<c:if test="${s.didSur ne 0}">
+					<td style="text-align: center;"><input type="button" value="참여" disabled="disabled" onclick="goSurvey(${s.surSeq}, ${now }, ${start }, ${end })" /></td>
+				</c:if>
+				<td style="text-align: center;"><input type="button" value="결과" onclick="viewResult(${s.surSeq}, ${now }, ${start }, ${end })" /></td>
 			</tr>
 		</c:forEach>
 		
 		
 	</table>
 	
-	<div id="btnBox" style="text-align: right; margin: 30px 10px 0px 0px;">
+	
+	<div id="btnBox" style="text-align: center; margin: 30px 10px 0px 0px;">
+		
+		<select id="category" name="category" style="height: 25px;">
+			<option value="title">제목</option>
+			<option value="writer">작성자</option>
+		</select>
+		<input type="text" id="search" name="search" style="height: 19px;" />
+		<input type="button" onclick="search()" value="검색" style="height: 25px;" />
+		
 		<c:if test="${sessionScope.userGrade eq 'admin' }">
-			<input type="button" value="등록" onclick="registSurvey()" style="color: white; background-color: black;" />
+			<input type="button" value="등록" onclick="registSurvey()" style="color: white; background-color: black; float: right;" />
 		</c:if>
-		<input type="button" value="목록" onclick="originList()" />
+		<input type="button" value="목록" onclick="originList()" style=" float: right;" />
+		
 	</div>
 
+	<c:import url="/WEB-INF/views/research/paging.jsp" />
 
 
 
@@ -165,6 +181,13 @@ function viewResult(seq_no, today, start, end){
 }
 
 
+
+function search(){
+	let category = $("#category").val();
+	let search = $("#search").val();
+	
+	location.href = "/research/list?category="+category+"&search="+search;
+}
 
 function registSurvey(){
 	

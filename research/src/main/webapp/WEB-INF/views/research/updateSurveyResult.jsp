@@ -142,7 +142,7 @@ tr {
 	
 	<div id="btnBox" class="center" style="margin: 20px 0px;">
 		<input type="button" onclick="submitSur()" value="제출" />
-		<input type="button" onclick="javascript:history.go(-1)" value="목록" />
+		<input type="button" onclick="javascript:history.go(-1)" value="뒤로가기" />
 	</div>
 	
 	
