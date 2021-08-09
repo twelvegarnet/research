@@ -41,7 +41,7 @@ tr {
 
 
 <!-- content start -->
-<div id="contnet" style="width: 1000px; margin: 0 auto; min-height: 663px;">
+<div id="content" style="width: 1000px; margin: 0 auto; min-height: 663px;">
 
 	<div class="head" style="font-size: 20pt; font-weight: 500; margin-top: 20px;">설문조사</div>
 	
@@ -56,7 +56,7 @@ tr {
 			<td colspan="1" style="padding: 8px;"><fmt:formatDate value="${survey.surStartDate }" pattern="yyyy-MM-dd" /></td>
 			<td class="center" colspan="1">종료일</td>
 			<td colspan="1" style="padding: 8px;"><fmt:formatDate value="${survey.surEndDate }" pattern="yyyy-MM-dd" /></td>
-			<td class="center" colspan="1">조회수</td>
+			<td class="center" colspan="1">참여자 수</td>
 			<td colspan="1">${survey.hit }</td>
 		</tr>
 		<tr>
@@ -68,55 +68,192 @@ tr {
 	
 	<form action="/research/submit" method="POST" name="surveyContent">
 	
-		<div id="surqList">
+		<div id="surqList" style="margin-top: 10px;">
 			
 			<c:forEach var="sc" items="${surveyContent }" begin="0" end="${survey.surCnt }" varStatus="status">
-				<input type="hidden" name="surqSeq${status.count }" value="${sc.surqSeq }" />
-				<div class="padding">${status.count}.&nbsp;<c:out value="${sc.surqTitle }" escapeXml="true" /></div>
-				<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="1" />①&nbsp;<c:out value="${sc.surqTitle1 }" escapeXml="true" /></div>
-				<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="2" />②&nbsp;<c:out value="${sc.surqTitle2 }" escapeXml="true" /></div>
-				<c:if test="${not empty sc.surqTitle3 }">
-					<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="3" />③&nbsp;<c:out value="${sc.surqTitle3 }" escapeXml="true" /></div>
+				<input type="hidden" name="surqSeq${status.count }" value="${sc.SURQ_SEQ }" />
+				<div class="padding">${status.count}.&nbsp;<c:out value="${sc.SURQ_TITLE }" escapeXml="true" /></div>
+				
+				<c:choose>
+					<c:when test="${sc.CHOOSENUM eq 1 }">
+						<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="1" checked="checked" disabled="disabled" />①&nbsp;<c:out value="${sc.SURQ_TITLE1 }" escapeXml="true" /></div>
+					</c:when>
+					<c:otherwise>
+						<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="1" disabled="disabled" />①&nbsp;<c:out value="${sc.SURQ_TITLE1 }" escapeXml="true" /></div>
+					</c:otherwise>
+				</c:choose>
+				
+				<c:choose>
+					<c:when test="${sc.CHOOSENUM eq 2 }">
+						<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="2" checked="checked" disabled="disabled" />②&nbsp;<c:out value="${sc.SURQ_TITLE2 }" escapeXml="true" /></div>
+					</c:when>
+					<c:otherwise>
+						<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="2" disabled="disabled" />②&nbsp;<c:out value="${sc.SURQ_TITLE2 }" escapeXml="true" /></div>
+					</c:otherwise>
+				</c:choose>
+				
+				<c:if test="${not empty sc.SURQ_TITLE3 }">
+					<c:choose>
+						<c:when test="${sc.CHOOSENUM eq 3 }">
+							<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="3" checked="checked" disabled="disabled" />③&nbsp;<c:out value="${sc.SURQ_TITLE3 }" escapeXml="true" /></div>
+						</c:when>
+					<c:otherwise>
+							<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="3" disabled="disabled" />③&nbsp;<c:out value="${sc.SURQ_TITLE3 }" escapeXml="true" /></div>
+					</c:otherwise>
+					</c:choose>
 				</c:if>
-				<c:if test="${not empty sc.surqTitle4 }">
-					<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="4" />④&nbsp;<c:out value="${sc.surqTitle4 }" escapeXml="true" /></div>
+				
+				<c:if test="${not empty sc.SURQ_TITLE4 }">
+					<c:choose>
+						<c:when test="${sc.CHOOSENUM eq 4 }">
+							<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="4" checked="checked" disabled="disabled" />④&nbsp;<c:out value="${sc.SURQ_TITLE4 }" escapeXml="true" /></div>
+						</c:when>
+						<c:otherwise>
+							<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="4" disabled="disabled" />④&nbsp;<c:out value="${sc.SURQ_TITLE4 }" escapeXml="true" /></div>
+						</c:otherwise>
+					</c:choose>
 				</c:if>
-				<c:if test="${not empty sc.surqTitle5 }">
-					<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="5" />⑤&nbsp;<c:out value="${sc.surqTitle5 }" escapeXml="true" /></div>
+				
+				<c:if test="${not empty sc.SURQ_TITLE5 }">
+					<c:choose>
+						<c:when test="${sc.CHOOSENUM eq 5 }">
+							<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="5" checked="checked" disabled="disabled" />⑤&nbsp;<c:out value="${sc.SURQ_TITLE5 }" escapeXml="true" /></div>
+						</c:when>
+						<c:otherwise>
+							<div class="padding inline-block"><input type="radio" name="chooseNum${status.count }" value="5" disabled="disabled" />⑤&nbsp;<c:out value="${sc.SURQ_TITLE5 }" escapeXml="true" /></div>
+						</c:otherwise>
+					</c:choose>
 				</c:if>
-				<div class="padding">선택사유&nbsp;<input type="text" style="width: 693px;" name="description${status.count }" maxlength="50" /></div>
+				
+				<c:if test="${not empty sc.DESCRIPTION }">
+					<div style="width: 80%; margin-top: 20px;">선택사유 : <c:out value="${sc.DESCRIPTION }" escapeXml="true" /></div>
+				</c:if>
+				
 				<hr>
-				<br>
 			</c:forEach>
 			
 		</div>
 	
-		<input type="hidden" name="surSeq" value="${survey.surSeq }" />
-		<input type="hidden" name="surCnt" value="${survey.surCnt }" />
-
 	</form>
 	
 	<div id="btnBox" class="center" style="margin: 20px 0px;">
-		<input type="button" onclick="submitSur()" value="제출" />
-		<input type="button" onclick="javascript:history.go(-1)" value="목록" />
+		<c:if test="${sessionScope.userGrade eq 'admin'}">
+			<input type="button" onclick="updateSur()" value="설문조사 수정" />
+			<input type="button" onclick="deleteSur()" value="설문조사 삭제" />
+		</c:if>
+		<input type="button" onclick="updateResult()" value="수정" />
+		<input type="button" onclick="deleteResult()" value="삭제" />
+		<input type="button" onclick="location.href='/research/list'" value="목록" />
 	</div>
 	
+	<input type="hidden" id="start" value="<fmt:formatDate value="${survey.surStartDate }" pattern="yyyy-MM-dd" />" />
+	<input type="hidden" id="end" value="<fmt:formatDate value="${survey.surEndDate }" pattern="yyyy-MM-dd" />" />
 	
 </div> <!-- content end -->
 
 <script>
-function showResult(){
-	console.log("결과보기 버튼 작동")	
+
+/* 오늘 날짜 미리 얻어놓기 */
+const date = new Date();
+const year = date.getFullYear();
+let month = date.getMonth()+1;
+if(month < 10){
+	month = "0" + month;
+}
+let day = date.getDate();
+if(day < 10){
+	day = "0" + day;
+}
+
+const getToday = (year + "" + month + "" + day)*1; // 오늘 날짜
+
+
+
+/* 설문조사 수정 - 관리자권한 (이미 설문조사가 시작되었다면 수정할 수 없음) */
+function updateSur(){
+
+	
+	const getToday = (year + "" + month + "" + day)*1; // 오늘 날짜
+	
+	const startDate = document.querySelector("#start").value.replace(/-/g,"")*1; // 설문조사 시작일
+	
+	if(startDate <= getToday){
+		alert("이미 시작된 설문은 수정할 수 없습니다.");
+		return false;
+	}
+	
+	location.href = "/research/updateSurveyContent?surSeq="+${survey.surSeq};
+}
+
+/* 설문조사 삭제 - 관리자권한 (이미 설문조사가 시작되었다면 삭제할 수 없음) */
+function deleteSur(){
+	
+	const startDate = document.querySelector("#start").value.replace(/-/g,"")*1; // 설문조사 시작일
+	
+	if(startDate < getToday){
+		alert("이미 시작된 설문은 삭제할 수 없습니다.");
+		return false;
+	}
+	
+	const finalChk = confirm("정말 삭제하시겠습니까?");
+	
+	if(finalChk == true){
+		location.href = "/research/deleteSurvey?surSeq="+${survey.surSeq};
+	}
+	
 }
 
 
-
-function submitSur(){
-	const f = document.surveyContent;
-	f.submit();
+/* 설문조사 결과 수정 - 모든 회원 권한 (이미 설문조사가 종료되었다면 수정할 수 없음) */
+function updateResult(){
+	
+	const endDate = document.querySelector("#end").value.replace(/-/g,"")*1; // 설문조사 종료일
+	
+	if(endDate < getToday){
+		alert("이미 종료된 설문은 설문결과를 수정할 수 없습니다.");
+		return false
+	}
+	
+	const finalChk = confirm("수정하시겠습니까?")
+	
+	if(finalChk == true){
+		location.href = "/research/updateSurveyResult?surSeq="+${survey.surSeq};
+	}
 }
 
 
+/* 설문조사 결과 삭제 - 모든 회원 권한 (이미 설문조사가 종료되었다면 삭제할 수 없음) */
+function deleteResult(){
+	
+	const endDate = document.querySelector("#end").value.replace(/-/g,"")*1; // 설문조사 종료일
+	
+	if(endDate < getToday){
+		alert("이미 종료된 설문은 설문결과를 삭제할 수 없습니다.");
+		return false
+	}
+	
+	const finalChk = confirm("수정하시겠습니까?")
+	
+	if(finalChk == true){
+		location.href = "/research/deleteSurveyResult?surSeq="+${survey.surSeq};
+	}
+}
 </script>
 
 <c:import url="/WEB-INF/views/layout/footer.jsp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
