@@ -16,25 +16,34 @@
 			SELECT survey_seq.nextval FROM dual
 		</selectKey>
 		
-		INSERT INTO survey (sur_seq, sur_title, sur_cnt, sur_start_date, sur_end_date, reg_name, udt_name)
-		VALUES (#{surSeq}, #{surTitle}, #{surCnt}, #{surStartDate}, #{surEndDate}, 'ehdcks112', 'ehdcks112')
+		INSERT INTO survey (sur_seq, sur_title, sur_cnt, sur_start_date, sur_end_date, reg_name)
+		VALUES (#{surSeq}, #{surTitle}, #{surCnt}, #{surStartDate}, #{surEndDate}, #{regName})
 	</insert>
 	
 	<insert id="insertSurveyContent" parameterType="SurveyContent">
-		INSERT INTO survey_content (surq_seq, sur_seq, surq_title, surq_title1, surq_title2, surq_title3, surq_title4, surq_title5, reg_name)
-		VALUES (survey_content_seq.nextval, #{surSeq}, #{surqTitle}
-			, #{surqTitle1}
-			, #{surqTitle2}
-			<if test="!surqTitle3.equals('')">
+		INSERT INTO survey_content (surq_seq, sur_seq, surq_title, surq_title1, surq_title2
+			<if test="!''.equals(surqTitle3)">
+				, surq_title3
+			</if>
+			<if test="!''.equals(surqTitle4)">
+				, surq_title4
+			</if>
+			<if test="!''.equals(surqTitle5)">
+				, surq_title5
+			</if>
+		 	, reg_name)
+		 	
+		VALUES (survey_content_seq.nextval, #{surSeq}, #{surqTitle}, #{surqTitle1}, #{surqTitle2}
+			<if test="!''.equals(surqTitle3)">
 				, #{surqTitle3}
 			</if>
-			<if test="!surqTitle4.equals('')">
+			<if test="!''.equals(surqTitle4)">
 				, #{surqTitle4}
 			</if>
-			<if test="!surqTitle5.equals('')">
+			<if test="!''.equals(surqTitle5)">
 				, #{surqTitle5}
 			</if>
-			, '장동찬')
+			, #{regName})
 	</insert>
 	
 	<select id="selectSurvey" parameterType="Survey" resultType="Survey">
@@ -58,8 +67,78 @@
 		<if test="!description.equals('')">
 			#{description},
 		</if> 
-			'장동찬')
+			#{writer})
 	</insert>
 	
-
+	<update id="updateHit" parameterType="int">
+		UPDATE survey
+		SET hit = hit + 1
+		WHERE sur_seq = #{surSeq}
+	</update>
+	
+	<select id="selectAdminLogin" parameterType="Users" resultType="Users">
+		SELECT * FROM users
+		WHERE user_id = #{userId}
+	</select>
+	
+	<select id="selectUsersLogin" parameterType="Users" resultType="Users">
+		SELECT * FROM users
+		WHERE user_id = #{userId}
+	</select>
+	
+	<update id="updateSurvey" parameterType="Survey">
+		UPDATE survey
+		SET sur_title = #{surTitle},sur_cnt = #{surCnt}, 
+			sur_start_date = #{surStartDate}, sur_end_date = #{surEndDate}, 
+			udt_name = #{udtName}, udt_date = sysdate
+		WHERE sur_seq = #{surSeq}
+	</update>
+	
+	<delete id="deleteSurveyContent" parameterType="Survey">
+		DELETE FROM survey_content
+		WHERE sur_seq = #{surSeq}
+	</delete>
+	
+	<delete id="deleteSurvey" parameterType="Survey">
+		DELETE FROM survey
+		WHERE sur_seq = #{surSeq}
+	</delete>
+	
+	<select id="selectSurveyResult" parameterType="Survey" resultType="SurveyResult">
+		SELECT * FROM sur_result
+		WHERE sur_seq = #{surSeq}
+	</select>
+	
+	<select id="selectTotalResult" parameterType="Survey" resultType="hashmap">
+		SELECT survey_content.*
+			, ( SELECT count(*) FROM sur_result WHERE sur_result.surq_seq = survey_content.surq_seq)AS totalCnt
+            , ( SELECT count(*) FROM sur_result WHERE sur_result.surq_seq = survey_content.surq_seq AND choose_num = 1 )AS num1
+            , ( SELECT count(*) FROM sur_result WHERE sur_result.surq_seq = survey_content.surq_seq AND choose_num = 2 )AS num2
+            , ( SELECT count(*) FROM sur_result WHERE sur_result.surq_seq = survey_content.surq_seq AND choose_num = 3 )AS num3
+            , ( SELECT count(*) FROM sur_result WHERE sur_result.surq_seq = survey_content.surq_seq AND choose_num = 4 )AS num4
+            , ( SELECT count(*) FROM sur_result WHERE sur_result.surq_seq = survey_content.surq_seq AND choose_num = 5 )AS num5
+		FROM survey_content
+		WHERE survey_content.sur_seq = #{surSeq}
+	</select>
+	
+	<select id="selectMyResult" parameterType="Survey" resultType="hashmap">
+		SELECT survey_content.*
+			, ( SELECT count(*) FROM sur_result WHERE sur_result.surq_seq = survey_content.surq_seq)AS totalCnt
+            , ( SELECT count(*) FROM sur_result WHERE sur_result.surq_seq = survey_content.surq_seq AND choose_num = 1 )AS num1
+            , ( SELECT count(*) FROM sur_result WHERE sur_result.surq_seq = survey_content.surq_seq AND choose_num = 2 )AS num2
+            , ( SELECT count(*) FROM sur_result WHERE sur_result.surq_seq = survey_content.surq_seq AND choose_num = 3 )AS num3
+            , ( SELECT count(*) FROM sur_result WHERE sur_result.surq_seq = survey_content.surq_seq AND choose_num = 4 )AS num4
+            , ( SELECT count(*) FROM sur_result WHERE sur_result.surq_seq = survey_content.surq_seq AND choose_num = 5 )AS num5
+			, ( SELECT choose_num FROM sur_result WHERE sur_seq = 4 AND sur_result.surq_seq = survey_content.surq_seq AND writer = #{regName})AS choosenum
+			, ( SELECT description FROM sur_result WHERE sur_seq = 4 AND sur_result.surq_seq = survey_content.surq_seq AND writer = #{regName})AS description
+		FROM survey_content
+		WHERE survey_content.sur_seq = #{surSeq}
+	</select>
+	
+	<select id="selectSurveyResultDescription" parameterType="SurveyResult" resultType="SurveyResult">
+		SELECT * FROM sur_result
+		WHERE sur_seq = #{surSeq} AND surq_seq = #{surqSeq} AND choose_num = #{chooseNum}
+	</select>
+	
+	
 </mapper>
