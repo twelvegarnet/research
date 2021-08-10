@@ -83,9 +83,9 @@ tr {
 					<td style="text-align: center;"><input type="button" value="참여" onclick="goSurvey(${s.surSeq}, ${now }, ${start }, ${end })" /></td>
 				</c:if>
 				<c:if test="${s.didSur ne 0}">
-					<td style="text-align: center;"><input type="button" value="참여" disabled="disabled" onclick="goSurvey(${s.surSeq}, ${now }, ${start }, ${end })" /></td>
+					<td style="text-align: center;"><input type="button" value="참여" onclick="alreadySubmit(${s.surSeq })" /></td>
 				</c:if>
-				<td style="text-align: center;"><input type="button" value="결과" onclick="viewResult(${s.surSeq}, ${now }, ${start }, ${end })" /></td>
+				<td style="text-align: center;"><input type="button" value="결과" onclick="viewResult(${s.hit }, ${s.surSeq}, ${now }, ${start }, ${end })" /></td>
 			</tr>
 		</c:forEach>
 		
@@ -102,10 +102,10 @@ tr {
 		<input type="text" id="search" name="search" style="height: 19px;" />
 		<input type="button" onclick="search()" value="검색" style="height: 25px;" />
 		
+		<input type="button" value="목록" onclick="originList()" style="margin-right: 10px; float: right;" />
 		<c:if test="${sessionScope.userGrade eq 'admin' }">
-			<input type="button" value="등록" onclick="registSurvey()" style="color: white; background-color: black; float: right;" />
+			<input type="button" value="등록" onclick="registSurvey()" style="margin-right: 10px; color: white; background-color: black; float: right;" />
 		</c:if>
-		<input type="button" value="목록" onclick="originList()" style=" float: right;" />
 		
 	</div>
 
@@ -151,7 +151,22 @@ function goSurvey(seq_no, today, start, end ){
 	}
 }
 
-function viewResult(seq_no, today, start, end){
+function alreadySubmit(sur_seq){
+	
+	const submitChk = confirm("이미 참여한 설문조사입니다. 상세보기로 이동하시겠습니까?");
+
+	if(submitChk == true){
+		location.href = "/research/view?surSeq="+sur_seq;
+	}
+}
+
+function viewResult(hit, seq_no, today, start, end){
+	
+	if(hit == 0){
+		alert("아직 아무도 참여하지 않은 설문조사입니다.");
+		return false
+	}
+	
 	if( today < start ){
 		
 		alert("설문조사 시작일 전입니다.");

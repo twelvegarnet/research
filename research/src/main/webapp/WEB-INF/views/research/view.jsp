@@ -139,7 +139,7 @@ tr {
 		</div>
 	
 	</form>
-	
+
 	<div id="btnBox" class="center" style="margin: 20px 0px;">
 		<c:if test="${sessionScope.userGrade eq 'admin'}">
 			<input type="button" onclick="updateSur()" value="설문조사 수정" />
@@ -226,7 +226,7 @@ function deleteSur(){
 	
 	const startDate = document.querySelector("#start").value.replace(/-/g,"")*1; // 설문조사 시작일
 	
-	if(startDate < getToday){
+	if(startDate <= getToday){
 		alert("이미 시작된 설문은 삭제할 수 없습니다.");
 		return false;
 	}
