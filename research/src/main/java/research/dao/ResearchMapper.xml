@@ -13,7 +13,7 @@
 				AND REGEXP_LIKE ( sur_title, #{search} )
 			</if>
 			<if test="category.equals('writer')">
-				AND REGEXP_LIKE ( reg_name, #{search} )
+				AND REGEXP_LIKE ( writer, #{search} )
 			</if>
 		</if>
 	</select>
@@ -27,6 +27,15 @@
 							survey.*
 							, (SELECT count(*) FROM sur_result WHERE sur_result.sur_seq = survey.sur_seq AND writer = #{writer})AS did_sur
 						FROM survey
+						WHERE 1=1
+						<if test="!search.equals('')">
+							<if test="category.equals('title')">
+								AND REGEXP_LIKE ( sur_title, #{search} )
+							</if>
+							<if test="category.equals('writer')">
+								AND REGEXP_LIKE ( writer, #{search} )
+							</if>
+						</if>
 						ORDER BY survey.sur_seq DESC
 					)S
 					ORDER BY rnum DESC
@@ -156,8 +165,8 @@
             , ( SELECT count(*) FROM sur_result WHERE sur_result.surq_seq = survey_content.surq_seq AND choose_num = 3 )AS num3
             , ( SELECT count(*) FROM sur_result WHERE sur_result.surq_seq = survey_content.surq_seq AND choose_num = 4 )AS num4
             , ( SELECT count(*) FROM sur_result WHERE sur_result.surq_seq = survey_content.surq_seq AND choose_num = 5 )AS num5
-			, ( SELECT choose_num FROM sur_result WHERE sur_seq = 4 AND sur_result.surq_seq = survey_content.surq_seq AND writer = #{regName})AS choosenum
-			, ( SELECT description FROM sur_result WHERE sur_seq = 4 AND sur_result.surq_seq = survey_content.surq_seq AND writer = #{regName})AS description
+			, ( SELECT choose_num FROM sur_result WHERE sur_seq = #{surSeq} AND sur_result.surq_seq = survey_content.surq_seq AND writer = #{regName})AS choosenum
+			, ( SELECT description FROM sur_result WHERE sur_seq = #{surSeq} AND sur_result.surq_seq = survey_content.surq_seq AND writer = #{regName})AS description
 		FROM survey_content
 		WHERE survey_content.sur_seq = #{surSeq}
 	</select>
