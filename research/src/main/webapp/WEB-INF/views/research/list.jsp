@@ -53,13 +53,13 @@ tr {
 		<!-- List Header -->
 		<tr>
 			<th style="width: 5%;">NO</th>
-			<th style="width: 38%;">제목</th>
+			<th style="width: 43%;">제목</th>
 			<th style="width: 10%;">작성자</th>
 			<th style="width: 10%;">시작일</th>
 			<th style="width: 10%;">마감일</th>
 			<th style="width: 10%;">완료여부</th>
 			<th style="width: 5%;">참여수</th>
-			<th style="width: 5%;">참여</th>
+			<!-- <th style="width: 5%;">참여</th> -->
 			<th style="width: 7%;">결과보기</th>
 		</tr>
 		
@@ -79,12 +79,12 @@ tr {
 					<c:if test="${now gt end }">완료</c:if>
 				</td>
 				<td style="text-align: center;">${s.hit }</td>
-				<c:if test="${s.didSur eq 0}">
+				<%-- <c:if test="${s.didSur eq 0}">
 					<td style="text-align: center;"><input type="button" value="참여" onclick="goSurvey(${s.surSeq}, ${now }, ${start }, ${end })" /></td>
 				</c:if>
 				<c:if test="${s.didSur ne 0}">
 					<td style="text-align: center;"><input type="button" value="참여" onclick="alreadySubmit(${s.surSeq })" /></td>
-				</c:if>
+				</c:if> --%>
 				<td style="text-align: center;"><input type="button" value="결과" onclick="viewResult(${s.hit }, ${s.surSeq}, ${now }, ${start }, ${end })" /></td>
 			</tr>
 		</c:forEach>

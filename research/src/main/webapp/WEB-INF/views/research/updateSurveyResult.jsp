@@ -126,7 +126,10 @@ tr {
 				</c:if>
 				
 				<c:if test="${not empty sc.DESCRIPTION }">
-					<div style="width: 80%; margin-top: 20px;">선택사유&nbsp;<input type="text" style="width: 693px;" name="description${status.count }" maxlength="50" value="<c:out value="${sc.DESCRIPTION }" escapeXml="true" />" /></div>
+					<div style="width: 80%;">선택사유&nbsp;<input type="text" style="width: 693px;" name="description${status.count }" maxlength="50" value="<c:out value="${sc.DESCRIPTION }" escapeXml="true" />" /></div>
+				</c:if>
+				<c:if test="${empty sc.DESCRIPTION }">
+					<div style="width: 80%;">선택사유&nbsp;<input type="text" style="width: 693px;" name="description${status.count }" maxlength="50" /></div>
 				</c:if>
 				
 				<hr>
