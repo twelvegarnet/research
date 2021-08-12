@@ -8,9 +8,6 @@
 <c:if test="${not empty paging.search }">
 	<c:set var="search" value="&search=${paging.search }" />
 </c:if>
-<c:if test="${not empty paging.listCount }">
-	<c:set var="listCount" value="&listCount=${paging.listCount }" />
-</c:if>
 
 <div class="text-center" style="text-align: center;">
 	<ul class="pagination">
@@ -18,14 +15,14 @@
 		<%-- 처음 페이지 버튼 --%>
 		<%-- 첫 페이지가 아닐 때 버튼 노출 --%>
 		<c:if test="${paging.startPage ne 1 }">
-		  <li><a href="/board/list?curPage=1${category}${search}${listCount}"><span>&lt;&lt;</span></a></li>
+		  <li><a href="/board/list?curPage=1${category}${search}"><span>&lt;&lt;</span></a></li>
 		</c:if>
 	
 		<%-- 이전 페이징 리스트로 가기 --%>
 		<c:choose>
 			<c:when test="${paging.startPage gt paging.pageCount }">
 				<li>
-				<a href="/board/list?curPage=${paging.startPage - paging.pageCount }${category}${search}${listCount}"
+				<a href="/board/list?curPage=${paging.startPage - paging.pageCount }${category}${search}"
 				style="border: none; color: black; margin: 0px 5px;">&lt;이전</a></li>
 			</c:when>
 			<c:otherwise>
@@ -40,11 +37,11 @@
 					style="color: black; margin: 0px 5px;">1</a></li>
 				</c:when>
 				<c:when test="${i eq paging.curPage }">
-					<li><a href="/board/list?curPage=${i }${category}${search}${listCount}"
+					<li><a href="/board/list?curPage=${i }${category}${search}"
 					style="color: red; border: 1px solid #ccc; margin: 0px 5px;">${i }</a></li>
 				</c:when>
 				<c:otherwise>
-					<li><a href="/board/list?curPage=${i }${category}${search}${listCount}"
+					<li><a href="/board/list?curPage=${i }${category}${search}"
 					style="border: none; color: black; margin: 0px 5px;">${i }</a></li>
 				</c:otherwise>
 			</c:choose>
@@ -53,7 +50,7 @@
 		<%-- 다음 페이징 리스트로 가기 --%>
 		<c:choose>
 			<c:when test="${paging.endPage ne paging.totalPage }">
-				<li><a href="/board/list?curPage=${paging.startPage + paging.pageCount }${category}${search}${listCount}"
+				<li><a href="/board/list?curPage=${paging.startPage + paging.pageCount }${category}${search}"
 				style="border: none; color: black; margin: 0px 5px;">다음 &gt;</a></li>
 			</c:when>
 			<c:otherwise>
@@ -63,7 +60,7 @@
 		<%-- 마지막 페이지 버튼 --%>
 		<%-- 마지막 페이지가 아닐 때 버튼 노출 --%>
 		<c:if test="${paging.endPage ne paging.totalPage }">
-			<li><a href="/board/list?curPage=${paging.totalPage }${category}${search}${listCount}"><span>&gt;&gt;</span></a></li>
+			<li><a href="/board/list?curPage=${paging.totalPage }${category}${search}"><span>&gt;&gt;</span></a></li>
 		</c:if>
 
 

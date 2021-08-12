@@ -110,7 +110,7 @@ tr {
 	</div>
 
 	<c:import url="/WEB-INF/views/research/paging.jsp" />
-
+	
 
 
 

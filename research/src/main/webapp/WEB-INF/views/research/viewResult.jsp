@@ -37,7 +37,7 @@
 			 	</c:if>
 			 	<input type="button" value="선택이유" onclick="viewDescription(${sc.SUR_SEQ}, ${sc.SURQ_SEQ}, 1)" style="float: right;" />
 		 	</div>
-
+		 	
 	 		<div>
 	 			<div style="width: 100%; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: pre;">②&nbsp;<c:out value="${sc.SURQ_TITLE2 }" escapeXml="true" /></div>
 			 	<c:if test="${sc.NUM2 ne 0}">

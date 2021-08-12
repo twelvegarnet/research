@@ -142,5 +142,14 @@ public interface ResearchDao {
 
 	int userChk(SurveyResult sr);
 
+	/**
+	 * 종료된 설문조사 상사보기에서 메일 보내기 클릭 시 
+	 * 해당 설문조사에 참여한 모든 회원들의 이메일 정보를 불러온다
+	 * 
+	 * @param s - 설문조사 번호를 담고있는 객체
+	 * @return - 해당 설문조사를 수행한 모든 결과 데이터
+	 */
+	List<Users> getUsersData(Survey s);
+
 
 }

@@ -140,21 +140,32 @@ tr {
 	
 	</form>
 
+	<form action="/research/sendMail" method="POST" name="sendMail">
+	
 	<div id="btnBox" class="center" style="margin: 20px 0px;">
-		<c:if test="${sessionScope.userGrade eq 'admin'}">
+		<c:if test="${sessionScope.userGrade eq 'admin' && now lt start}">
 			<input type="button" onclick="updateSur()" value="설문조사 수정" />
 			<input type="button" onclick="deleteSur()" value="설문조사 삭제" />
 		</c:if>
 		
-		<c:if test="${empty doSurveyChk }">
+		<c:if test="${now ge start && now le end && empty doSurveyChk }">
 			<input type="button" onclick="goSurvey(${survey.surSeq }, ${now }, ${start }, ${end } )" value="설문조사 참여" />
 		</c:if>
-		<c:if test="${not empty doSurveyChk }">
+		<c:if test="${now ge start && now le end && not empty doSurveyChk }">
 			<input type="button" onclick="updateResult()" value="설문조사 결과 수정" />
 			<input type="button" onclick="deleteResult()" value="설문조사 결과 삭제" />
 		</c:if>
+		
+		<c:if test="${now gt end && sessionScope.userGrade eq 'admin'}">
+			<input type="hidden" name="surSeq" value="${survey.surSeq }" />
+			<input type="button" onclick="sendEmail()" value="결과메일 보내기" />
+			<input type="button" onclick="sendSMS(${survey.surSeq})" value="결과문자 보내기" />
+		</c:if>
+		
 		<input type="button" onclick="location.href='/research/list'" value="목록" />
 	</div>
+	
+	</form>
 	
 	<input type="hidden" id="start" value="<fmt:formatDate value="${survey.surStartDate }" pattern="yyyy-MM-dd" />" />
 	<input type="hidden" id="end" value="<fmt:formatDate value="${survey.surEndDate }" pattern="yyyy-MM-dd" />" />
@@ -273,6 +284,37 @@ function deleteResult(){
 	if(finalChk == true){
 		location.href = "/research/deleteSurveyResult?surSeq="+${survey.surSeq};
 	}
+}
+
+
+/* 설문조사가 종료된 후부터 해당 결과를 참여자들에게 메일로 발송한다 */
+function sendEmail(){
+	
+	const form = document.sendMail;
+	const sendMailChk = confirm("해당 설문조사 참여자들에게 메일을 보내겠습니까?");
+	
+	if(sendMailChk == true){
+		form.submit();
+	}
+}
+
+
+
+/* 설문조사가 종료된 후 종료알림을 참여자들에게 문자로 발송한다 */
+function sendSMS(sur_seq){
+	
+	$.ajax({
+		type: "POST"
+		, url: "/research/sendSMS"
+		, data: { surSeq: sur_seq }
+		, dataType: "html"
+		, success: function(res){
+			alert("문자가 발송되었습니다.");
+		}
+		, error: function(res){
+			alert("문제가 발생했습니다. 나중에 다시 시도해주세요.");
+		}
+	})
 }
 </script>
 
