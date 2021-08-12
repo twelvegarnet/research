@@ -6,20 +6,24 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import research.dto.Survey;
 import research.dto.SurveyContent;
 import research.dto.SurveyResult;
 import research.dto.Users;
 import research.service.ResearchService;
+import research.util.Coolsms;
 import research.util.Paging;
 
 @Controller
@@ -30,6 +34,8 @@ public class ResearchController {
 	@Autowired
 	ResearchService researchService;
 	
+	@Autowired
+	private JavaMailSender mailSender;
 	
 	@RequestMapping(value="/login")
 	public void main() {
@@ -264,6 +270,65 @@ public class ResearchController {
 		
 		// 설문조사 리스트로 이동
 		return "redirect:/research/list";
+	}
+	
+	@RequestMapping(value="/sendMail", method=RequestMethod.POST)
+	public String mailSending(Survey survey) {
+		
+//		String setfrom = "ehdcks112@gmail.com";
+//		String tomail = "ehdcks112@gmail.com"; // 받는 사람 이메일
+//		String title = "테스트용 메일 제목"; // 제목
+//		String content = "테스트용 메일 내용입니다."; // 내용
+//
+//		try {
+//			MimeMessage message = mailSender.createMimeMessage();
+//			MimeMessageHelper messageHelper = new MimeMessageHelper(message,
+//					true, "UTF-8");
+//			
+//			messageHelper.setFrom(setfrom); // 보내는사람 생략하면 정상작동을 안함
+//			messageHelper.setTo(tomail); // 받는사람 이메일
+//			messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
+//			messageHelper.setText(content); // 메일 내용
+//
+//			mailSender.send(message);
+//		} catch (Exception e) {
+//			System.out.println(e);
+//		}
+		
+		researchService.sendMail(survey);
+
+		return "redirect:/research/list";
+	}
+	
+	
+	@RequestMapping(value="/sendSMS", method=RequestMethod.POST)
+	public String sendSMS(Survey survey, HttpServletRequest request) throws CoolsmsException {
+		// 해당 설문조사를 참여한 모든 회원들에게 설문종료를 문자로 알린다
+		Survey s = researchService.getSurvey(survey);
+		List<Users> users = researchService.getUsersData(survey);
+
+	    String api_key = "NCSYQXWGOEYDT3HT"; //위에서 받은 api key를 추가
+        String api_secret = "HR9DFBY7JL6ISR4LNC3JM2XWR70UXWH4";  //위에서 받은 api secret를 추가
+
+        Coolsms coolsms = new Coolsms(api_key, api_secret);
+        
+        for(Users u:users) {
+        	
+        	HashMap<String, String> params = new HashMap<String, String>();
+        	
+        	params.put("to", u.getPhoneNo());
+        	params.put("from", "01063615524");
+        	params.put("type", "SMS");
+        	params.put("text", "설문조사가 종료되었습니다.\r\n홈페이지에서 확인해주세요.\r\n\r\n제목 : "+s.getSurTitle());
+        	params.put("app_version", "test app 1.2");
+        	
+        	JSONObject obj = (JSONObject) coolsms.send(params);
+        	System.out.println(obj.toString());
+        	
+        }
+
+
+        return "redirect:/research/list"; //문자 메시지 발송 성공했을때 number페이지로 이동함
 	}
 	
 

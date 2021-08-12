@@ -198,5 +198,10 @@
 		WHERE sur_seq = #{surSeq} AND writer = #{writer}
 	</select>
 	
+	<select id="getUsersData" parameterType="Survey" resultType="Users">
+		SELECT users.* FROM users
+		WHERE users.user_id IN (SELECT writer FROM sur_result WHERE sur_seq = #{surSeq} GROUP BY writer)
+	</select>
+	
 	
 </mapper>

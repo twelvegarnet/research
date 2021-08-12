@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 </head>
 <body>
 
@@ -14,16 +15,26 @@
 	<c:choose>
 		<c:when test="${not empty sr.description }">
 			<br>
-			<div>*&nbsp;<c:out value="${sr.description }" escapeXml="true" /></div>
+			<div class="description">*&nbsp;<c:out value="${sr.description }" escapeXml="true" /></div>
 		</c:when>
-		<c:otherwise>
-			<div>작성된 선택사유 내역이 없습니다.</div>
-		</c:otherwise>
 	</c:choose>
 	
 </c:forEach>
 
+<div id="noDescription" style="display: none;">
+	<label>* 작성된 선택사유가 없습니다.</label>
+</div>
+
 <br>
+
+<script>
+const descriptionCnt = $("div[class=description]").length;
+console.log(descriptionCnt);
+
+if(descriptionCnt == 0){
+	$("#noDescription").attr("style", "display: block;");
+}
+</script>
 
 </body>
 </html>

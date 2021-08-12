@@ -120,5 +120,16 @@ public interface ResearchService {
 
 	int userChk(SurveyResult sr);
 
+	/**
+	 * 종료된 설문조사 상세보기에서 메일보내기를 클릭 시
+	 * 해당 설문에 참여한 회원들 모두에게 메일을 발송한다
+	 * 
+	 * @param survey - 해당 설문조사 번호가 담긴 객체
+	 */
+	void sendMail(Survey survey);
+
+	List<Users> getUsersData(Survey survey);
+
+
 
 }

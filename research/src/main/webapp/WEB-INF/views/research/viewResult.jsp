@@ -27,23 +27,25 @@
 	 		
 	 		<div>
 		 		<div style="width: 100%; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: pre;">①&nbsp;<c:out value="${sc.SURQ_TITLE1 }" escapeXml="true" /></div>
-		 		<div style="width: <fmt:formatNumber value="${num1/totalCnt*100 }" pattern=".0" />%; background-color: red; display: inline-block; line-height: 15px;">&nbsp;</div>
 			 	<c:if test="${sc.NUM1 ne 0}">
+			 		<div style="width: <fmt:formatNumber value="${num1/totalCnt*100 }" pattern=".0" />%; background-color: red; display: inline-block; line-height: 15px;">&nbsp;</div>
 			 		<fmt:formatNumber value="${num1/totalCnt*100 }" pattern=".0" />%
 			 	</c:if>
 			 	<c:if test="${sc.NUM1 eq 0}">
+			 		<div style="width: 5%; background-color: red; display: inline-block; line-height: 15px;">&nbsp;</div>
 			 		0%
 			 	</c:if>
 			 	<input type="button" value="선택이유" onclick="viewDescription(${sc.SUR_SEQ}, ${sc.SURQ_SEQ}, 1)" style="float: right;" />
 		 	</div>
-
+		 	
 	 		<div>
 	 			<div style="width: 100%; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: pre;">②&nbsp;<c:out value="${sc.SURQ_TITLE2 }" escapeXml="true" /></div>
-	 			<div style="width: <fmt:formatNumber value="${num2/totalCnt*100 }" pattern=".0" />%; background-color: blue; display: inline-block; line-height: 15px;">&nbsp;</div>
 			 	<c:if test="${sc.NUM2 ne 0}">
+		 			<div style="width: <fmt:formatNumber value="${num2/totalCnt*100 }" pattern=".0" />%; background-color: blue; display: inline-block; line-height: 15px;">&nbsp;</div>
 			 		<fmt:formatNumber value="${num2/totalCnt*100 }" pattern=".0" />%
 			 	</c:if>
 			 	<c:if test="${sc.NUM2 eq 0}">
+		 			<div style="width: 5%; background-color: blue; display: inline-block; line-height: 15px;">&nbsp;</div>
 			 		0%
 			 	</c:if>
 			 	<input type="button" value="선택이유" onclick="viewDescription(${sc.SUR_SEQ}, ${sc.SURQ_SEQ}, 2)" style="float: right;" />
@@ -52,11 +54,12 @@
 	 		<c:if test="${not empty sc.SURQ_TITLE3 }">
 	 			<div>
 	 				<div style="width: 100%; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: pre;">③&nbsp;<c:out value="${sc.SURQ_TITLE3 }" escapeXml="true" /></div>
-	 				<div style="width: <fmt:formatNumber value="${num3/totalCnt*100 }" pattern=".0" />%; background-color: orange; display: inline-block; line-height: 15px;">&nbsp;</div>
 			 		<c:if test="${sc.NUM3 ne 0}">
+		 				<div style="width: <fmt:formatNumber value="${num3/totalCnt*100 }" pattern=".0" />%; background-color: orange; display: inline-block; line-height: 15px;">&nbsp;</div>
 				 		<fmt:formatNumber value="${num3/totalCnt*100 }" pattern=".0" />%
 				 	</c:if>
 				 	<c:if test="${sc.NUM3 eq 0}">
+		 				<div style="width: 5%; background-color: orange; display: inline-block; line-height: 15px;">&nbsp;</div>
 				 		0%
 				 	</c:if>
 			 		<input type="button" value="선택이유" onclick="viewDescription(${sc.SUR_SEQ}, ${sc.SURQ_SEQ}, 3)" style="float: right;" />
@@ -66,11 +69,12 @@
 	 		<c:if test="${not empty sc.SURQ_TITLE4 }">
 	 			<div>
 	 				<div style="width: 100%; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: pre;">④&nbsp;<c:out value="${sc.SURQ_TITLE4 }" escapeXml="true" /></div>
-	 				<div style="width: <fmt:formatNumber value="${num4/totalCnt*100 }" pattern=".0" />%; background-color: orange; display: inline-block; line-height: 15px;">&nbsp;</div>
 			 		<c:if test="${sc.NUM4 ne 0}">
+		 				<div style="width: <fmt:formatNumber value="${num4/totalCnt*100 }" pattern=".0" />%; background-color: purple; display: inline-block; line-height: 15px;">&nbsp;</div>
 				 		<fmt:formatNumber value="${num4/totalCnt*100 }" pattern=".0" />%
 				 	</c:if>
 				 	<c:if test="${sc.NUM4 eq 0}">
+		 				<div style="width: 5%; background-color: purple; display: inline-block; line-height: 15px;">&nbsp;</div>
 				 		0%
 				 	</c:if>
 			 		<input type="button" value="선택이유" onclick="viewDescription(${sc.SUR_SEQ}, ${sc.SURQ_SEQ}, 4)" style="float: right;" />
@@ -80,11 +84,12 @@
 	 		<c:if test="${not empty sc.SURQ_TITLE5 }">
 	 			<div>
 	 				<div style="width: 100%; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: pre;">⑤&nbsp;<c:out value="${sc.SURQ_TITLE5 }" escapeXml="true" /></div>
-	 				<div style="width: <fmt:formatNumber value="${num5/totalCnt*100 }" pattern=".0" />%; background-color: gray; display: inline-block; line-height: 15px;">&nbsp;</div>
 			 		<c:if test="${sc.NUM5 ne 0}">
+		 				<div style="width: <fmt:formatNumber value="${num5/totalCnt*100 }" pattern=".0" />%; background-color: gray; display: inline-block; line-height: 15px;">&nbsp;</div>
 				 		<fmt:formatNumber value="${num5/totalCnt*100 }" pattern=".0" />%
 				 	</c:if>
 				 	<c:if test="${sc.NUM5 eq 0}">
+		 				<div style="width: 5%; background-color: gray; display: inline-block; line-height: 15px;">&nbsp;</div>
 				 		0%
 				 	</c:if>
 			 		<input type="button" value="선택이유" onclick="viewDescription(${sc.SUR_SEQ}, ${sc.SURQ_SEQ}, 5)" style="float: right;" />
