@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -331,7 +332,12 @@ public class ResearchController {
         return "redirect:/research/list"; //문자 메시지 발송 성공했을때 number페이지로 이동함
 	}
 	
-
+	@Scheduled(cron="0 0 14 * * *")
+	public void TestScheduler() {
+		
+		logger.info("제대로 작동하나요?");
+		
+	}
 	
 	
 	
