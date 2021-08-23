@@ -308,8 +308,8 @@ public class ResearchController {
 		Survey s = researchService.getSurvey(survey);
 		List<Users> users = researchService.getUsersData(survey);
 
-	    String api_key = "NCSYQXWGOEYDT3HT"; //위에서 받은 api key를 추가
-        String api_secret = "HR9DFBY7JL6ISR4LNC3JM2XWR70UXWH4";  //위에서 받은 api secret를 추가
+	    String api_key = ""; //위에서 받은 api key를 추가
+        String api_secret = "";  //위에서 받은 api secret를 추가
 
         Coolsms coolsms = new Coolsms(api_key, api_secret);
         
