@@ -318,7 +318,7 @@ public class ResearchServiceImpl implements ResearchService{
 		
 		// 메일을 보내기 위한 계정 정보
 		final String username = "ehdcks112@gmail.com";         
-		final String password = "genirccufyshmclh";
+		final String password = "";
 		String surTitle = (String) s.getSurTitle();
 		
 		
